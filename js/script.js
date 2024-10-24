@@ -1,12 +1,12 @@
 const randomNumberListEl = document.getElementById("random-number-list");
 const confirmNumber = document.getElementById("confirm-numbers");
 
-// funzione per generare un numero casuale
+// * funzione per generare un numero casuale
 const numberRadomizer = (min, max) => {
   return Math.floor(Math.random() * (max - min) + min);
 };
 
-// funzione per generazione numeri casuali da 1 a 99
+// * funzione per generazione numeri casuali da 1 a 99
 const genRandomNumberList = () => {
   const randomNumberArray = [];
 
@@ -20,7 +20,7 @@ const genRandomNumberList = () => {
       isNumberValid = !randomNumberArray.includes(randomNumber);
     }
 
-    //stampo numero nell'array dei numeri random
+    //stampo numero nell'array dei numeri random + creazione dell'Id per ogni singolo elemento
     randomNumberListEl.innerHTML += `<li id="random-number${i}" class="list-group-item">${randomNumber}</li>`;
     randomNumberArray.push(randomNumber);
   }
@@ -28,6 +28,7 @@ const genRandomNumberList = () => {
   return randomNumberArray;
 };
 
+// * funzione per nascondere i numeri presenti nella lista
 const hideRandomNumberList = () => {
   const firstRandomNumber = document.getElementById("random-number1");
   const secondRandomNumber = document.getElementById("random-number2");
@@ -42,7 +43,7 @@ const hideRandomNumberList = () => {
   fifthRandomNumber.innerText = "XX";
 };
 
-/* funzione che confronta i due array */
+// * funzione che confronta i due array
 const compareBetweenArray = (randomArray, userArray) => {
   let numberIncluded = [];
   randomArray.forEach((randomArrayIndex) => {
@@ -53,13 +54,17 @@ const compareBetweenArray = (randomArray, userArray) => {
 
   numberIncluded.sort();
   numberIncluded.join(" , ");
-  return `I numeri che hai indovinato sono: ${numberIncluded}`;
+  console.log(numberIncluded);
+
+  return numberIncluded.length > 0
+    ? `I numeri che hai indovinato sono: ${numberIncluded}`
+    : `Non hai indovinato nessun numero!`;
 };
 
 // richiamo generazione lista di numeri casuale
 const casualNumberArray = genRandomNumberList();
 
-// evento confronto numeri random e quelli selezionati dall'utente
+// * evento confronto numeri random e quelli selezionati dall'utente
 confirmNumber.addEventListener("submit", (e) => {
   e.preventDefault();
   const userNumberArray = [];
@@ -79,4 +84,5 @@ confirmNumber.addEventListener("submit", (e) => {
   );
 });
 
-setTimeout(hideRandomNumberList, 30000);
+// * tempo di 30 secondi per memorizzare i numeri dopo di che vengono cancellati
+setTimeout(hideRandomNumberList, 5000);
