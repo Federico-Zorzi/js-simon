@@ -1,6 +1,8 @@
 const randomNumberListEl = document.getElementById("random-number-list");
 const confirmNumber = document.getElementById("confirm-numbers");
 
+const numberOfFields = 5;
+
 // * funzione per generare un numero casuale
 const numberRadomizer = (min, max) => {
   return Math.floor(Math.random() * (max - min) + min);
@@ -10,7 +12,7 @@ const numberRadomizer = (min, max) => {
 const genRandomNumberList = () => {
   const randomNumberArray = [];
 
-  for (let i = 1; i <= 5; i++) {
+  for (let i = 1; i <= numberOfFields; i++) {
     //genero numero random
     let randomNumber = numberRadomizer(1, 99);
     let isNumberValid = !randomNumberArray.includes(randomNumber);
@@ -41,6 +43,11 @@ const hideRandomNumberList = () => {
   thirdRandomNumber.innerText = "XX";
   fourthRandomNumber.innerText = "XX";
   fifthRandomNumber.innerText = "XX";
+
+  for (let i = 1; i <= numberOfFields; i++) {
+    let actualUserNumber = document.getElementById(`user-number${i}`);
+    actualUserNumber.disabled = false;
+  }
 };
 
 // * funzione che confronta i due array
@@ -61,16 +68,25 @@ const compareBetweenArray = (randomArray, userArray) => {
 };
 
 const cleanUserInputs = () => {
-  for (let i = 1; i <= 5; i++) {
+  for (let i = 1; i <= numberOfFields; i++) {
     let actualUserNumber = document.getElementById(`user-number${i}`);
     actualUserNumber.value = "";
   }
 };
 
+const disabledFields = () => {
+  for (let i = 1; i <= numberOfFields; i++) {
+    let actualUserNumber = document.getElementById(`user-number${i}`);
+    actualUserNumber.disabled = true;
+  }
+};
+
 // pulisco gli input dell-utente al caricamento della pagina
 cleanUserInputs();
+disabledFields();
 // richiamo generazione lista di numeri casuale
 const casualNumberArray = genRandomNumberList();
+console.log(casualNumberArray);
 
 // * evento confronto numeri random e quelli selezionati dall'utente
 confirmNumber.addEventListener("submit", (e) => {
@@ -80,7 +96,7 @@ confirmNumber.addEventListener("submit", (e) => {
   const messageForUser = document.getElementById("message-for-user");
 
   /* stampa array numeri utente */
-  for (let i = 1; i <= 5; i++) {
+  for (let i = 1; i <= numberOfFields; i++) {
     let actualUserNumber = document.getElementById(`user-number${i}`);
     userNumberArray.push(parseInt(actualUserNumber.value));
   }
@@ -95,4 +111,4 @@ confirmNumber.addEventListener("submit", (e) => {
 });
 
 // * tempo di 30 secondi per memorizzare i numeri dopo di che vengono cancellati
-setTimeout(hideRandomNumberList, 5000);
+setTimeout(hideRandomNumberList, 10000);
