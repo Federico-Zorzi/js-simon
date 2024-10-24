@@ -1,14 +1,26 @@
 const randomNumberListEl = document.getElementById("random-number-list");
+const confirmNumber = document.getElementById("confirm-numbers");
 
+// funzione per generare un numero casuale
 const numberRadomizer = (min, max) => {
-  return Math.floor(Math.random() * max - min) + min;
+  return Math.floor(Math.random() * (max - min) + min);
 };
 
+// funzione per generazione numeri casuali da 1 a 99
 const genRandomNumberList = () => {
   const randomNumberArray = [];
 
   for (let i = 1; i <= 5; i++) {
+    //genero numero random
     let randomNumber = numberRadomizer(1, 99);
+    let isNumberValid = !randomNumberArray.includes(randomNumber);
+    // controllo che il numero sia l'unico all'interno dell'array dei numeri random
+    while (!isNumberValid) {
+      randomNumber = numberRadomizer(1, 99);
+      isNumberValid = !randomNumberArray.includes(randomNumber);
+    }
+
+    //stampo numero nell'array dei numeri random
     randomNumberListEl.innerHTML += `<li id="random-number${i}" class="list-group-item">${randomNumber}</li>`;
     randomNumberArray.push(randomNumber);
   }
@@ -17,21 +29,54 @@ const genRandomNumberList = () => {
 };
 
 const hideRandomNumberList = () => {
-  console.log("Ciao");
+  const firstRandomNumber = document.getElementById("random-number1");
+  const secondRandomNumber = document.getElementById("random-number2");
+  const thirdRandomNumber = document.getElementById("random-number3");
+  const fourthRandomNumber = document.getElementById("random-number4");
+  const fifthRandomNumber = document.getElementById("random-number5");
 
-  const firstNumber = document.getElementById("random-number1");
-  const secondNumber = document.getElementById("random-number2");
-  const thirdNumber = document.getElementById("random-number3");
-  const fourthNumber = document.getElementById("random-number4");
-  const fifthNumber = document.getElementById("random-number5");
-
-  firstNumber.innerText = "XX";
-  secondNumber.innerText = "XX";
-  thirdNumber.innerText = "XX";
-  fourthNumber.innerText = "XX";
-  fifthNumber.innerText = "XX";
+  firstRandomNumber.innerText = "XX";
+  secondRandomNumber.innerText = "XX";
+  thirdRandomNumber.innerText = "XX";
+  fourthRandomNumber.innerText = "XX";
+  fifthRandomNumber.innerText = "XX";
 };
 
-console.log(genRandomNumberList());
+/* funzione che confronta i due array */
+const compareBetweenArray = (randomArray, userArray) => {
+  let numberIncluded = [];
+  randomArray.forEach((randomArrayIndex) => {
+    if (userArray.includes(randomArrayIndex)) {
+      numberIncluded.push(`${randomArrayIndex}`);
+    }
+  });
 
-setTimeout(hideRandomNumberList, 3000);
+  numberIncluded.sort();
+  numberIncluded.join(" , ");
+  return `I numeri che hai indovinato sono: ${numberIncluded}`;
+};
+
+// richiamo generazione lista di numeri casuale
+const casualNumberArray = genRandomNumberList();
+
+// evento confronto numeri random e quelli selezionati dall'utente
+confirmNumber.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const userNumberArray = [];
+  const randomNumberArray = casualNumberArray;
+  const messageForUser = document.getElementById("message-for-user");
+
+  /* stampa array numeri utente */
+  for (let i = 1; i <= 5; i++) {
+    let actualUserNumber = document.getElementById(`user-number${i}`);
+    userNumberArray.push(parseInt(actualUserNumber.value));
+  }
+
+  /* confronta i due array */
+  messageForUser.innerText = compareBetweenArray(
+    randomNumberArray,
+    userNumberArray
+  );
+});
+
+setTimeout(hideRandomNumberList, 30000);
