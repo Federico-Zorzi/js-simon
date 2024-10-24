@@ -48,19 +48,27 @@ const compareBetweenArray = (randomArray, userArray) => {
   let numberIncluded = [];
   randomArray.forEach((randomArrayIndex) => {
     if (userArray.includes(randomArrayIndex)) {
-      numberIncluded.push(`${randomArrayIndex}`);
+      numberIncluded.push(randomArrayIndex);
     }
   });
 
   numberIncluded.sort();
   numberIncluded.join(" , ");
-  console.log(numberIncluded);
 
   return numberIncluded.length > 0
     ? `I numeri che hai indovinato sono: ${numberIncluded}`
     : `Non hai indovinato nessun numero!`;
 };
 
+const cleanUserInputs = () => {
+  for (let i = 1; i <= 5; i++) {
+    let actualUserNumber = document.getElementById(`user-number${i}`);
+    actualUserNumber.value = "";
+  }
+};
+
+// pulisco gli input dell-utente al caricamento della pagina
+cleanUserInputs();
 // richiamo generazione lista di numeri casuale
 const casualNumberArray = genRandomNumberList();
 
@@ -76,6 +84,8 @@ confirmNumber.addEventListener("submit", (e) => {
     let actualUserNumber = document.getElementById(`user-number${i}`);
     userNumberArray.push(parseInt(actualUserNumber.value));
   }
+
+  cleanUserInputs();
 
   /* confronta i due array */
   messageForUser.innerText = compareBetweenArray(
